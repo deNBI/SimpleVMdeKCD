@@ -4,16 +4,16 @@ After the start of the machine has been triggered, some time may pass before the
 As soon as this is the case, this becomes visible via a green icon.
 
 Once the VM is available, you can use it for testing the tools and inspecting the data before
-you scale up your analysis in the next section.
+you start with your analysis in the next section.
 
 ### 2.1 Check your VM
 
 Log in to the VM and verify that SimpleVM provisioned the VM correctly.
 
-1. Click on the Instances tab (Overview -> Instances). After you have initiated the start-up of the machine, you should have been automatically redirected there. Now open the "How to connect"
-   dropdown of your machine. Click on the Theia ide URL which opens a new browser tab.
-   ![](figures/howtoconnect.png)
-2. Click on `Terminal` in the upper menu and select `New Terminal`.
+1. After you have initiated the start-up of the machine, you should have been automatically redirected to the **Instance Overview** page. Now click on the dropdown of your machine. 
+   Click on the VSCode URL which opens a new browser tab.
+   ![](figures/vscode.png)
+2. Click on the sandwich button in the upper left menu and select `Terminal` and `New Terminal`.
    ![](figures/terminal.png)
 3. Inspect the VM before starting to work with it. Let's check whether the VM
    has the properties that SimpleVM promised you by typing the following commands
@@ -41,10 +41,8 @@ Log in to the VM and verify that SimpleVM provisioned the VM correctly.
 5. Test if the needed commands are installed by running all of them with -h parameter.
    You will get an explanation of their usage in the next chapter.
 
-   * `ncbi-genome-download -h`
-   * `mash -h`
-   * `csvtk -h`
-   * `jq -h`
+   * `s5cmd -h`
+   * `parallel -h`
    
    If there is an error reported, then something went wrong, and we have to either
    repeat the conda installation manually or install it a different way.
