@@ -1,39 +1,34 @@
 ## Section 3: Scale up your analysis
 
-In the first part you have tested the SimpleVM environment. 
-Now it is time for using a VM with more cores to scale up the analysis. 
-For this reason you have either saved your installed tools by creating a snapshot or, 
-if you are starting with this section, a snapshot has been prepared for you. 
-You will now reuse one of these snapshots with a larger flavor.
-Further, we will alos search for more metagenomic datasets via object storage
-and scale up our analysis by providing more cores to mash.
+In this short section we want to load some external data into our virtual environment
+so we can use them for some analyses. Further, we will also search for more metagenomic
+datasets via object storage.
 
-### 3.1 Create a new VM based on your snapshot
+### 3.1 Create a volume to store data in
 
-1. Click on `Overviews` -> `Snapshots` in left menu and check which status
-   your snapshot has. You can also filter of the name in the top menu. 
-   If it has the status `active`, you can 
-   navigate to the `New Instance` tab (and select the SimpleVMIntro23 project).
-
-2. Provide again a name for your instance.
-3. In the flavors sections please choose the **de.NBI large** flavor which has 28 cores available.
-   ![](figures/large_flavor.PNG)
-
-   Click on the Snapshot tab to select the snapshot **SimpleVMIntro23**.
-   ![](figures/startsnap.png)
-
-5. Please create a volume for your VM and enter your name without whitespace 
-   (Example: Max Mustermann -> MaxMusterman) as the volume name. 
-   Enter `data` (`/vol/data`) as mountpath and provide 1 GB as the storage size.
+1. Inspect what block storage is available on your virtual instance by typing:
+   ```
+   df -h 
+   ```
+3. In the SimpleVM portal, navigate to the Volumes section and create a volume for your VM.
+   Enter your name without whitespace (Example: Max Mustermann -> MaxMusterman) as the volume name 
+   and provide 10 GB as the volume size.
    ![](figures/createVolume.png)
 
-6. Grant again access to all project members with a `Cloud-portal-support` tag.
-   This way these members get ssh access to your VM and can help you in case
-   something does not work as expected.
+4. Attach this volume to your instance by opening the pull down menu of your volume and
+   clicking the green attach icon. Then select you virtual machine in the pop up menu and
+   click the attach button.
    ![](figures/grantAccess.png)
 
-7. Confirm the checkboxes and click on Start.
-   While the VM is starting please fill out our [user survey](https://cloud.denbi.de/survey/index.php/638945?lang=en).
+5. Activate the newly created and attached volume in your VM:
+   ```
+   lsblk
+   sudo mkfs.ext4 /dev/vdb
+   sudo mkdir /mnt/volume   
+   sudo mnt /dev/vdc /mnt/volume
+   sudo chown ubuntu:ubuntu /mnt/volume
+   lsblk   
+   ```
 
 ### 3.2 Interact with the SRA Mirror and search for more datasets to analyse
 
