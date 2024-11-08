@@ -1,8 +1,16 @@
-## Section 3: Scale up your analysis
+## Section 3: Basic data management in the cloud
 
-In this short section we want to load some external data into our virtual environment
-so we can use them for some analyses. Further, we will also search for more metagenomic
+Once your cumpute environment is set up, the question is how access your data
+for your analysis. In this short section we want to load some external data into
+our virtual environment. Further, we will also search for more metagenomic
 datasets via object storage.
+
+### 3.1 Create a volume to store data in
+
+1. Inspect what block storage is available on your virtual instance by typing:
+   ```
+
+
 
 ### 3.1 Create a volume to store data in
 
@@ -18,52 +26,29 @@ datasets via object storage.
 4. Attach this volume to your instance by opening the pull down menu of your volume and
    clicking the green attach icon. Then select you virtual machine in the pop up menu and
    click the attach button.
-   ![](figures/grantAccess.png)
+   ![](figures/attachVolume.png)
 
 5. Activate the newly created and attached volume in your VM:
    ```
    lsblk
-   sudo mkfs.ext4 /dev/vdb
+   sudo mkfs.ext4 /dev/vdc
    sudo mkdir /mnt/volume   
-   sudo mnt /dev/vdc /mnt/volume
+   sudo mount /dev/vdc /mnt/volume
    sudo chown ubuntu:ubuntu /mnt/volume
    lsblk   
    ```
+### 3.2 Interact with the public available data
 
-### 3.2 Interact with the SRA Mirror and search for more datasets to analyse
-
-1. You are now on the `Instance Overview` page. You can delete your old VM which
-   we used to create your snapshot. To do this, open the action selection of the old machine again
-   by clicking on 'Show Actions' and select 'Delete VM'. Confirm the deletion of the machine.
-   
-2. On your new VM, please click on `how to connect`.
-   You should see again a link. Please click on the link to open Theia-IDE on a new
-   browser tab.
-   ![](figures/howtoconnect.png)
-
-3. Click on `Terminal` in the upper menu and select `New Terminal`.
+1. 
+2.
+3.
+4.    Click on `Terminal` in the upper menu and select `New Terminal`.
    ![](figures/terminal.png)
 
-4. Activate the conda environment by running:
+5. Activate the conda environment by running:
    ```
    conda activate denbi
    ```
-
-6. Unfortunately, conda does not offer a minio cli binary,
-   which means that we would have to install it manually.
-   Download the binary:
-   ```
-   wget https://dl.min.io/client/mc/release/linux-amd64/mc
-   ```
-   Move it to a folder where other binaries usually are stored:
-   ```
-   sudo mv mc /usr/local/bin/
-   ```
-   Change file permissions:
-   ```
-   chmod a+x /usr/local/bin/mc
-   ```
-
 7. Add S3 config for our public SRA mirror on our Bielefeld Cloud site:
    ```
    mc config host add sra https://openstack.cebitec.uni-bielefeld.de:8080 "" ""
