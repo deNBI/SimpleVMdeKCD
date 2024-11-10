@@ -44,7 +44,9 @@ SSH keys: https://cloud.denbi.de/wiki/portal/user_information/#ssh-key
 4. Select the Conda tab and choose the following tools with their version numbers given below for installation via Conda:
    * s5cmd (2.0.0)
    * parallel (20220922)
-   ![](./figures/conda.png)
+   * seqkit (2.9.0)
+   * sra-tools (3.1.1)
+   ![](./figures/packages.png)
    
    You will learn in the next sections how to apply these tools.
 
