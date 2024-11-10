@@ -9,13 +9,6 @@ datasets via object storage.
 
 1. Inspect what block storage is available on your virtual instance by typing:
    ```
-
-
-
-### 3.1 Create a volume to store data in
-
-1. Inspect what block storage is available on your virtual instance by typing:
-   ```
    df -h 
    ```
 3. In the SimpleVM portal, navigate to the Volumes section and create a volume for your VM.
@@ -37,10 +30,34 @@ datasets via object storage.
    sudo chown ubuntu:ubuntu /mnt/volume
    lsblk   
    ```
+### 3.1 Public available data
+
+In our use case, we want to search for some pathogenic factors in metagenomic data.
+Metagenomic data is public available e.g. in the Short Read Archive (SRA) hosted by the
+National Center for Biotechnology Information. We can search here for specific data sets, e.g.
+for metagenomic data that were generated with a specific sequencing instrument for e specific 
+type of experiment.
+
+1. Go to:
+   https://www.ncbi.nlm.nih.gov/sra
+2. And enter in the search fild the following search pattern:
+   ```
+   antimicrobial resistance AND ((((((Oxford Nanopore[Platform]) AND METAGENOMIC[Source]) AND WGS[Strategy]) AND SINGLE[Layout]) AND RANDOM[Selection]))
+   ```
+3. Let's have a look on the first result.
+
+These data sets can be downloaded in different ways, e.g. using the public available
+FTP server
+
+1. Inspect what block storage is available on your virtual instance by typing:
+   ```
+
+
 ### 3.2 Interact with the public available data
+The 
 
 1. 
-2.
+2.https://aws.amazon.com/marketplace/search/results?trk=8384929b-0eb1-4af3-8996-07aa409646bc&sc_channel=el&FULFILLMENT_OPTION_TYPE=DATA_EXCHANGE&CONTRACT_TYPE=OPEN_DATA_LICENSES&filters=FULFILLMENT_OPTION_TYPE%2CCONTRACT_TYPE
 3.
 4.    Click on `Terminal` in the upper menu and select `New Terminal`.
    ![](figures/terminal.png)
