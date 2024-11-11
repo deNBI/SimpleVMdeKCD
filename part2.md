@@ -41,8 +41,9 @@ Log in to the VM and verify that SimpleVM provisioned the VM correctly.
 5. Test if the needed commands are installed by running all of them with -h parameter.
    You will get an explanation of their usage in the next chapter.
 
-   * `s5cmd -h`
+   * `mash -h`
    * `parallel -h`
+   * `csvtk -h`
    
    If there is an error reported, then something went wrong, and we have to either
    repeat the conda installation manually or install it a different way.
