@@ -28,8 +28,12 @@ datasets via object storage.
    sudo mkdir /mnt/volume   
    sudo mount /dev/vdc /mnt/volume
    sudo chown ubuntu:ubuntu /mnt/volume
-   lsblk
-   cd /mnt/volume   
+   lsblk   
+   ```
+6. Navigate to the newly created volume and activate the conda environment:
+   ```
+   cd /mnt/volume
+   conda activate denbi
    ```
 ### 3.1 Public available data
 
@@ -80,61 +84,82 @@ some cloud object storage, for instance at the AWS cloud by Amazon.
 1. Let's see what we can find at the AWS marketplace. In a browser, navigate to:
    [AWS marketplace](https://aws.amazon.com/marketplace/search/results?trk=8384929b-0eb1-4af3-8996-07aa409646bc&sc_channel=el&FULFILLMENT_OPTION_TYPE=DATA_EXCHANGE&CONTRACT_TYPE=OPEN_DATA_LICENSES&filters=FULFILLMENT_OPTION_TYPE%2CCONTRACT_TYPE)
 2. Let's search if we can find the SRA database that we used previously for FTP download by search for the term 'sra'.
-3. 
-4.    Click on `Terminal` in the upper menu and select `New Terminal`.
+3. S3 data can be directly accessed via web protocols, such as HTTPS (e.g. by using a brower or wget). However,
+   for convenient data management a client that speaks S3 is necessary. We will use the minio cleint for this.
+   Unfortunately, conda does not offer a minio cli binary, which means that we would have to install it manually.
+   Download the binary:
+   ```
+   cd /mnt/volume
+   wget https://dl.min.io/client/mc/release/linux-amd64/mc
+   ```
+   Move it to a folder where other binaries usually are stored:
+   ```
+   sudo mv mc /usr/local/bin/
+   ```
+   Change file permissions:
+   ```
+   chmod a+x /usr/local/bin/mc
+   ```
+5. Next we need to tell minio where the AWS cloud storage can be accessed and what
+   the access key and secret is.
+   ```
+   mc config host add aws https://s3.amazonaws.com "" ""
+   ```
+6. Let's see if we can find our data that we used previously:
+   ```
+   mc ls --summarize aws/sra-pub-run-odp/sra/SRR24962458
+   ```
+7. Now lets do the same analysis as before but this time using the AWS SRA mirror. First
+   we prepare a folder:
+   ```
+   cd /mnt/volume
+   mkdir aws
+   cd aws
+   ```
+   Then we dowload the data:
+   ```
+   mc cp  aws/sra-pub-run-odp/sra/SRR24962458/SRR24962458 .
+   ```
+   And we search again for pathogens:
+   ```
+   fasterq-dump -Z --skip-technical --concatenate-reads SRR24962458 | mash screen -p 12 ../genomes.msh -
+   ```
+
+### 3.2 Make the analysis where the data is located
+
+For operating on large datasets, accessing remote storage can be a bottle neck. For this reason, one of the cloud 
+paradigms is called Data Gravity: The idea that data is a massive attractor and should be processed as close to
+its source as possible, reducing the need for expensive data movement. For this reason, the de.NBI Cloud at Bielefeld
+site holds a mirror of all metagenomic data of the SRA that we will use now.
+   
+1. Click on `Terminal` in the upper menu and select `New Terminal`.
    ![](figures/terminal.png)
 
-5. Activate the conda environment by running:
-   ```
+2. Activate the conda environment by running:
+   ```   
    conda activate denbi
+   cd /mnt/volume   
    ```
-7. Add S3 config for our public SRA mirror on our Bielefeld Cloud site:
+3. Add S3 config for our public SRA mirror on our Bielefeld Cloud site:
    ```
    mc config host add sra https://openstack.cebitec.uni-bielefeld.de:8080 "" ""
    ```
 
-8. List which files are available for SRA number `SRR3984908`:
+4. List which files are available for a specific SRA number, e.g. for `SRR3984908`:
    ```
    mc ls sra/ftp.era.ebi.ac.uk/vol1/fastq/SRR398/008/SRR3984908
    ```
 
-9. Check the size of these files
+5. Check the size of these files
    ```
    mc du sra/ftp.era.ebi.ac.uk/vol1/fastq/SRR398/008/SRR3984908
    ```
 
-10. You can read the first lines of these files by using `mc cat`.
+6. You can read the first lines of these files by using `mc cat`.
    ```
    mc cat sra/ftp.era.ebi.ac.uk/vol1/fastq/SRR398/008/SRR3984908/SRR3984908_1.fastq.gz | zcat | head
    ```
-
-11. Search for SRA run accessions we want to analyse and check the sum of their size
-   (this may take a while to complete):
-   ```
-   mc find --regex "SRR6439511.*|SRR6439513.*|ERR3277263.*|ERR929737.*|ERR929724.*"  sra/ftp.era.ebi.ac.uk/vol1/fastq  -exec "  mc ls -r --json  {} " \
-      |  jq -s 'map(.size) | add'  \
-      | numfmt --to=iec-i --suffix=B --padding=7
-   ```
-
-   <details><summary>Show Explanation</summary>
-      
-    * `mc find` reports all files that have one of the following prefixes in their file name: `SRR6439511.`, `SRR6439513.`, `ERR3277263.`, `ERR929737.`, `ERR929724.`.
-    *  `jq` uses the json that is produced by `mc find` and sums up the size of all files (`.size` field).
-    * `numfmt` transforms the sum to a human-readable string.
-   
-   </details>
-
-### 3.3 Run commands with more cores and plot your result
-
-1. We created a mash index out of selected genomes that were classified as  
-   "greatest threat to human health" by the World Health Organisation (WHO)
-   in 2017: https://www.who.int/news/item/27-02-2017-who-publishes-list-of-bacteria-for-which-new-antibiotics-are-urgently-needed 
-   Please download the index:
-   ```
-   wget https://openstack.cebitec.uni-bielefeld.de:8080/simplevm-workshop/genomes.msh
-   ```
-
-2. We created a file that points to the datasets that you have found in the previous chapter.
+7. We created a file that points to metagenomic datasets that you have found in the previous chapter.
    Download the input file via:
    ```
    wget https://openstack.cebitec.uni-bielefeld.de:8080/simplevm-workshop/reads.tsv
@@ -181,6 +206,7 @@ some cloud object storage, for instance at the AWS cloud by Amazon.
    ```
    export -f search
    ```
+   
    Run your analysis in parallel.
    ```
    parallel -a reads.tsv search
