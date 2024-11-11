@@ -56,6 +56,7 @@ SSH keys: https://cloud.denbi.de/wiki/portal/user_information/#ssh-key
 6. Grant access to the workshop organizers (Peter Belmann, Sebastian Jünemann).
    This way these members get ssh access to your VM and can help you in case
    something does not work as expected.
+   ![](./figures/additional_users.png)
 7. Confirm the checkboxes and click on Start.
 
 Next to [Section 2](part2.md)
