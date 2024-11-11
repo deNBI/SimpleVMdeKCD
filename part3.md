@@ -222,10 +222,15 @@ site holds a mirror of all metagenomic data of the SRA that we will use now.
    ```
    cat output/*.txt > output.tsv
    ```
-7. Let's plot how many genomes we have found against the number of their matched k-mer hashes:
+7. Let's plot how many matched k-mer hashes we have found (from 0 to 1000):
    ```
    csvtk -t plot hist -H -f 3 output.tsv -o output.png
    ```
-   You can open this file by a click on the Explorer View and selecting the pdf. 
+   You can open this file by a click on the Explorer View and selecting the pdf.
+
+   We can also plot the number of found hashes for each of the found pathogens:
+   ```
+   csvtk -t plot box -H -g 7 -f 3 output.tsv --horiz -o output_box.png
+   ```
    
 Back to [Section 2](part2.md) 
