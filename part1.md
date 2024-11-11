@@ -42,9 +42,7 @@ SSH keys: https://cloud.denbi.de/wiki/portal/user_information/#ssh-key
    and select the **Visual Sudio Code** image based on **Ubuntu 24.04**.
    ![](./figures/resenv.png)
 4. Select the Conda tab and choose the following tools with their version numbers given below for installation via Conda:
-   * s5cmd (2.0.0)
    * parallel (20220922)
-   * seqkit (2.9.0)
    * sra-tools (3.1.1)
    * mash (2.2)
    * csvtk (0.9.1)
