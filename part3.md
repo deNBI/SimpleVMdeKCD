@@ -206,65 +206,26 @@ site holds a mirror of all metagenomic data of the SRA that we will use now.
    ```
    export -f search
    ```
-   
-   Run your analysis in parallel.
+   We can run this function now on the dat sets that are defined in the reads.tsv list in parallel:
    ```
    parallel -a reads.tsv search
    ```
    where
      * `reads.tsv` is a list of datasets that we want to scan.
      * `search` is the function that we want to call.
-   
-   
-6. Optional: This command will run a few minutes. You could open a second terminal
+
+5. Optional: This command will run a few minutes. You could open a second terminal
    and inspect the cpu utilization with `htop`.
    ![](figures/htop.png)
 
-7. Concatenate all results into one file via 
+6. Concatenate all results into one file via 
    ```
    cat output/*.txt > output.tsv
    ```
-
-8. Let's plot how many genomes we have found against the number of their matched k-mer hashes:
+7. Let's plot how many genomes we have found against the number of their matched k-mer hashes:
    ```
-   csvtk -t plot hist -H -f 3 output.tsv -o output.pdf
+   csvtk -t plot hist -H -f 3 output.tsv -o output.png
    ```
    You can open this file by a click on the Explorer View and selecting the pdf. 
-   ![](figures/openpdf.png)
-
-9. Get the title and the environment name about the found datasets by using Entrez tools
-   ```
-   for sraid in $(ls -1 output/ | cut -f 1 -d '.'); do  
-     esearch -db sra -query ${sraid} \
-       | esummary \
-       | xtract -pattern DocumentSummary -element @ScientificName,Title \
-       | sort | uniq  \
-       | sed "s/^/${sraid}\t/g"; 
-   done > publications.tsv
-   ```
-    
-   <details><summary>Show Explanation</summary>
-    * `for sraid in $(ls -1 output/ | cut -f 1 -d '.');` iterates over all datasets found in the output
-      directory.
-    * `esearch` just looks up the scientific name and title of the SRA study.
-    * 'sed' adds the SRA ID to the output table. The first column is the SRA ID, the second column is 
-       the scientific name and the third column is the study title.
-    * All results are stored the `publications.tsv` file.
-   </details>
-
-10. Set correct permissions on your volume:
-   ```
-   sudo chown ubuntu:ubuntu /vol/data/
-   ```
-
-11. Copy your results to the volume for later use:
-    ```
-    cp publications.tsv output.tsv /vol/data
-    ```
-
-12. Go to the Instance Overview page. Click on actions and detach the volume.
-    ![](figures/detachvolume.png)
-
-13. Finally, since you saved your output data you can safely delete the VM.
-
-Back to [Section 2](part2.md) | Next to [Section 4](part4.md)
+   
+Back to [Section 2](part2.md) 
