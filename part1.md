@@ -46,6 +46,7 @@ SSH keys: https://cloud.denbi.de/wiki/portal/user_information/#ssh-key
    * parallel (20220922)
    * seqkit (2.9.0)
    * sra-tools (3.1.1)
+   * mash (2.2)
    ![](./figures/packages.png)
    
    You will learn in the next sections how to apply these tools.
