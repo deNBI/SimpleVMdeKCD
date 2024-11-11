@@ -28,7 +28,8 @@ datasets via object storage.
    sudo mkdir /mnt/volume   
    sudo mount /dev/vdc /mnt/volume
    sudo chown ubuntu:ubuntu /mnt/volume
-   lsblk   
+   lsblk
+   cd /mnt/volume   
    ```
 ### 3.1 Public available data
 
@@ -42,23 +43,44 @@ type of experiment.
    https://www.ncbi.nlm.nih.gov/sra
 2. And enter in the search fild the following search pattern:
    ```
-   antimicrobial resistance AND ((((((Oxford Nanopore[Platform]) AND METAGENOMIC[Source]) AND WGS[Strategy]) AND SINGLE[Layout]) AND RANDOM[Selection]))
+   blood culture AND ((((((Oxford Nanopore[Platform]) AND METAGENOMIC[Source]) AND WGS[Strategy]) AND SINGLE[Layout]) AND RANDOM[Selection]))
    ```
-3. Let's have a look on the first result.
+3. Let's have a look on (one of) the first result:
+   https://www.ncbi.nlm.nih.gov/sra/?term=SRR24962458
 
-These data sets can be downloaded in different ways, e.g. using the public available
-FTP server
-
-1. Inspect what block storage is available on your virtual instance by typing:
+4. These data sets can be downloaded in different ways, e.g. using the public available
+   FTP server:
    ```
+   ftp ftp://ftp.sra.ebi.ac.uk/vol1/srr/SRR249/058/SRR24962458/SRR24962458
+   ```
+5. This data is still in a special format that needs to be converted in order to be inspected
+   for specific virulence factors:
+   ```
+   fasterq-dump --skip-technical SRR24962458
+   ```
+6. We will also download a sequence information of known pathogens. We created a mash index out of selected genomes
+   that were classified as  "greatest threat to human health" by the World Health Organisation (WHO) in 2017:
+   https://www.who.int/news/item/27-02-2017-who-publishes-list-of-bacteria-for-which-new-antibiotics-are-urgently-needed 
+   Please download the index:
+   ```
+   wget https://openstack.cebitec.uni-bielefeld.de:8080/simplevm-workshop/genomes.msh
+   ```
+7. Now we will screen the metagenomic data for parts of sequences belongig to those known pathogens:
+   ```
+   mash screen -p 12 genomes.msh SRR24962458.fastq
+   ```   
+### 3.2 Cloud enabled data
+Using FTP for file transfer is not the ideal choice, as it lacks features such as encryption, compression,
+and error checking, making it slower and less secure than alternative protocols. In cloud environments,
+the S3 protocol has become a de facto standard because it offers high-performance, secure, and reliable object
+storage with built-in features such as versioning, bucket policies, and multi-part uploads, making it well-suited
+for big data transfer and analytics workloads. For this reason, many scientific important data is already provided in 
+some cloud object storage, for instance at the AWS cloud by Amazon.
 
-
-### 3.2 Interact with the public available data
-The 
-
-1. 
-2.https://aws.amazon.com/marketplace/search/results?trk=8384929b-0eb1-4af3-8996-07aa409646bc&sc_channel=el&FULFILLMENT_OPTION_TYPE=DATA_EXCHANGE&CONTRACT_TYPE=OPEN_DATA_LICENSES&filters=FULFILLMENT_OPTION_TYPE%2CCONTRACT_TYPE
-3.
+1. Let's see what we can find at the AWS marketplace. In a browser, navigate to:
+   [AWS marketplace](https://aws.amazon.com/marketplace/search/results?trk=8384929b-0eb1-4af3-8996-07aa409646bc&sc_channel=el&FULFILLMENT_OPTION_TYPE=DATA_EXCHANGE&CONTRACT_TYPE=OPEN_DATA_LICENSES&filters=FULFILLMENT_OPTION_TYPE%2CCONTRACT_TYPE)
+2. Let's search if we can find the SRA database that we used previously for FTP download by search for the term 'sra'.
+3. 
 4.    Click on `Terminal` in the upper menu and select `New Terminal`.
    ![](figures/terminal.png)
 
