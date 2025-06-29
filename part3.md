@@ -74,60 +74,14 @@ type of experiment.
    mash screen -p 12 genomes.msh SRR24962458.fastq
    ```   
 ### 3.2 Cloud enabled data
+
 Using FTP for file transfer is not the ideal choice, as it lacks features such as encryption, compression,
 and error checking, making it slower and less secure than alternative protocols. In cloud environments,
 the S3 protocol has become a de facto standard because it offers high-performance, secure, and reliable object
 storage with built-in features such as versioning, bucket policies, and multi-part uploads, making it well-suited
 for big data transfer and analytics workloads. For this reason, many scientific important data is already provided in 
 some cloud object storage, for instance at the AWS cloud by Amazon.
-
-1. Let's see what we can find at the AWS marketplace. In a browser, navigate to:
-   [AWS marketplace](https://aws.amazon.com/marketplace/search/results?trk=8384929b-0eb1-4af3-8996-07aa409646bc&sc_channel=el&FULFILLMENT_OPTION_TYPE=DATA_EXCHANGE&CONTRACT_TYPE=OPEN_DATA_LICENSES&filters=FULFILLMENT_OPTION_TYPE%2CCONTRACT_TYPE)
-2. Let's search if we can find the SRA database that we used previously for FTP download by search for the term 'sra'.
-3. S3 data can be directly accessed via web protocols, such as HTTPS (e.g. by using a brower or wget). However,
-   for convenient data management a client that speaks S3 is necessary. We will use the minio cleint for this.
-   Unfortunately, conda does not offer a minio cli binary, which means that we would have to install it manually.
-   Download the binary:
-   ```
-   cd /mnt/volume
-   wget https://dl.min.io/client/mc/release/linux-amd64/mc
-   ```
-   Move it to a folder where other binaries usually are stored:
-   ```
-   sudo mv mc /usr/local/bin/
-   ```
-   Change file permissions:
-   ```
-   chmod a+x /usr/local/bin/mc
-   ```
-5. Next we need to tell minio where the AWS cloud storage can be accessed and what
-   the access key and secret is.
-   ```
-   mc config host add aws https://s3.amazonaws.com "" ""
-   ```
-6. Let's see if we can find our data that we used previously:
-   ```
-   mc ls --summarize aws/sra-pub-run-odp/sra/SRR24962458
-   ```
-7. Now lets do the same analysis as before but this time using the AWS SRA mirror. First
-   we prepare a folder:
-   ```
-   cd /mnt/volume
-   mkdir aws
-   cd aws
-   ```
-   Then we dowload the data:
-   ```
-   mc cp  aws/sra-pub-run-odp/sra/SRR24962458/SRR24962458 .
-   ```
-   And we search again for pathogens:
-   ```
-   fasterq-dump -Z --skip-technical --concatenate-reads SRR24962458 | mash screen -p 12 ../genomes.msh -
-   ```
-
-### 3.2 Make the analysis where the data is located
-
-For operating on large datasets, accessing remote storage can be a bottle neck. For this reason, one of the cloud 
+However for operating on large datasets, accessing remote storage can be a bottle neck. For this reason, one of the cloud 
 paradigms is called Data Gravity: The idea that data is a massive attractor and should be processed as close to
 its source as possible, reducing the need for expensive data movement. For this reason, the de.NBI Cloud at Bielefeld
 site holds a mirror of all metagenomic data of the SRA that we will use now.
