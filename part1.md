@@ -12,7 +12,7 @@ de.NBI Cloud wiki: https://cloud.denbi.de/wiki/registration/.
 Please make sure to to click on “continue” if this button shows up.
 
 Once you obtain a de.NBI Cloud account, please register for the SimpleVM project:
-https://cloud.denbi.de/tdf
+https://cloud.denbi.de/deKCD
 
 The workshop organizers will approve your project membership application as soon as possible.
 If you are successfully registered for a de.NBI Cloud account,
@@ -25,7 +25,7 @@ You start this tutorial from your profile page (https://simplevm.denbi.de).
 1. Click on the `New Instance` tab.
 
 2. If you are already member of a SimpleVM project then you are offered a drop down menu to select
-a project. In this case please select the **SimpleVMTest1** project. If this is
+a project. In this case please select the **deKCD2025HD** project. If this is
 your first SimpleVM project, you are now able to select/generate a key (next point) or directly start a VM.
 
 3. If you have no SSH key set so far, just click on generate key and save the
@@ -52,7 +52,7 @@ SSH keys: https://cloud.denbi.de/wiki/portal/user_information/#ssh-key
 
 5. Optional: Modify the URL path for VSCode. You will access VSCode via this URL.
    ![](./figures/resenv_url.png)
-6. Grant access to the workshop organizers (Peter Belmann, Sebastian Jünemann).
+6. Grant access to the workshop organizers (Peter Belmann, Nils Hoffmann).
    This way these members get ssh access to your VM and can help you in case
    something does not work as expected.
    ![](./figures/additional_users.png)
