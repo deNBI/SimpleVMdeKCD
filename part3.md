@@ -81,6 +81,7 @@ the S3 protocol has become a de facto standard because it offers high-performanc
 storage with built-in features such as versioning, bucket policies, and multi-part uploads, making it well-suited
 for big data transfer and analytics workloads. For this reason, many scientific important data is already provided in 
 some cloud object storage, for instance at the AWS cloud by Amazon.
+
 However for operating on large datasets, accessing remote storage can be a bottle neck. For this reason, one of the cloud 
 paradigms is called Data Gravity: The idea that data is a massive attractor and should be processed as close to
 its source as possible, reducing the need for expensive data movement. For this reason, the de.NBI Cloud at Bielefeld
