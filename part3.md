@@ -95,9 +95,24 @@ site holds a mirror of all metagenomic data of the SRA that we will use now.
    conda activate denbi
    cd /mnt/volume   
    ```
+3. S3 data can be directly accessed via web protocols, such as HTTPS (e.g. by using a brower or wget). 
+   However, for convenient data management a client that speaks S3 is necessary.
+   We will use the minio cleint for this. Unfortunately, conda does not offer a minio cli binary, which means that we would have to install it manually. Download the binary:
+   ```
+   wget https://dl.min.io/client/mc/release/linux-amd64/mc 
+   ```
+   Move it to a folder where other binaries usually are stored:
+   ```
+   sudo mv mc /usr/local/bin/
+   ```
+   Change file permissions:
+   ```
+   chmod a+x /usr/local/bin/mc
+   ```
+
 3. Add S3 config for our public SRA mirror on our Bielefeld Cloud site:
    ```
-   mc config host add sra https://openstack.cebitec.uni-bielefeld.de:8080 "" ""
+   mc alias set sra https://openstack.cebitec.uni-bielefeld.de:8080 "" ""
    ```
 
 4. List which files are available for a specific SRA number, e.g. for `SRR3984908`:
